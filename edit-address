@@ -1,0 +1,80 @@
+<?php
+session_start();
+include "sessions-file.php";
+if(isset($_SESSION[$authToken])) {
+    $id=$_SESSION['addressId'];
+    $newid=$id;
+    include 'databaseconnection.php';
+    $authtoken=$_SESSION[$authToken];
+//    echo "<script>console.log($authtoken)</script>";
+    $query = "select * from user_address where address_id=$id";
+
+    $result = mysqli_query($connection,$query);
+    $row3=mysqli_fetch_array($result);
+
+    $result1= mysqli_query($connection,"select * from users WHERE user_id='$authtoken'");
+
+    $row1=mysqli_fetch_array($result1);
+    $userPhone=$row1['user_mobile'];
+    include "services/fetch_total_amount.php";
+
+    ?>
+
+    <!DOCTYPE>
+    <html>
+    <head>
+        <link href="https://fonts.googleapis.com/css?family=Montserrat" rel="stylesheet">
+        <link href="css/style.css" rel="stylesheet">
+        <link href="css/slider.css" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css?family=Raleway" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css?family=Archivo+Narrow" rel="stylesheet">
+        <script src="js/script.js"></script>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        <script src="http://code.jquery.com/jquery-1.7.2.min.js"></script>
+        <script src="http://code.jquery.com/ui/1.8.21/jquery-ui.min.js"></script>
+        <script src="jquery.ui.touch-punch.min.js"></script>
+        <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1" />
+        <title> Welcome to MobiStore.com</title>
+        <meta name="description" content="Welcome to MobiStore.com" />
+        <link rel="icon" href="images/logo.png" type="image/png" sizes="16x16">
+    </head>
+
+    <body>
+    <?php include 'header.php'; ?>
+
+
+
+
+    <div class="gap"></div>
+
+
+
+    <div class="middle">
+        <div class="middle-container">
+            <ul class="left">
+
+                <li class="heading">
+                    YOUR CURRENT ADDRESS
+                </li>
+
+                <li class="newaddress">
+                    Edit Address</li>
+                <div class="cash-full-address">
+                    <h3>Re-enter your address details</h3>
+                    <form method="post" action="services/update_address-service.php">
+                        <div class="addresses"> <label>Name</label>
+                            <input type="text" value="<?php echo $row3['address_user_name'] ?>" name="name" required autocomplete="off" >
+                            <label>Phone</label>
+                            <input type="text"  value="<?php echo $row3['address_mobile'] ?>" name="phone" required autocomplete="off" maxlength="10" onkeypress='return event.charCode >= 48 && event.charCode <= 57'></div>
+                        <div class="addresses"> <label>City </label>
+                            <input type="text" value="<?php echo $row3['address_city'] ?>" name="city" required autocomplete="off" >
+
+       <label>State</label>
+        <input type="text" value="<?php echo $row3['address_state'] ?>" name="state" required autocomplete="off" ></div>
+
+                        <div class="addresses" ><label>Postal Code</label>
+                            <input type="text"  value="<?php echo $row3['address_pin_code'] ?>" name="pincode" required autocomplete="off" >
+
+
+                            <label>Landmark</label>
+                            <input type="text"  value="<?php echo $row3['address_landmark'] ?>" name="Landmark" required autocomplete="off" >
